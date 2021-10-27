@@ -26,11 +26,7 @@ class Timezone implements Rule
      */
     private function getTimezones()
     {
-        try{
-            return $this->timezoneRepository->all();
-        }catch(\Throwable $exception){
-            logError($exception);
-        }
+        return $this->timezoneRepository->all();
     }
 
     /**

@@ -15,7 +15,11 @@ class CountryCodeRepository
     {
         try{
             return Cache::remember('countryCodes', DAY_IN_SECONDS, function () {
-                Http::get('http://country.io/continent.json')->throw()->json();
+                $result = Http::get('http://country.io/continent.json')->throw()->json();
+
+                if($result){
+                    return array_keys($result);
+                }
             });
         }catch (RequestException $exception){
             logError($exception);

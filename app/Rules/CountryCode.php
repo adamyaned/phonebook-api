@@ -26,11 +26,7 @@ class CountryCode implements Rule
      */
     private function getCountryCodes()
     {
-        try{
-            return $this->countryCodeRepository->all();
-        }catch(\Throwable $exception){
-            logError($exception);
-        }
+        return $this->countryCodeRepository->all();
     }
 
     /**
