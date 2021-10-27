@@ -30,6 +30,7 @@
         },
         "files": [
             "app/Helpers/logger.php",
+            "app/Helpers/general.php",
             "app/Contstants/general.php"
         ]
     },

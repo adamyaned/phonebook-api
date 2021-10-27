@@ -31,12 +31,4 @@ class PhoneBook extends Model
         'country_code',
         'timezone'
     ];
-
-    /**
-     * @var string[]
-     */
-    protected $dates = [
-        'created_at',
-        'updated_at'
-    ];
 }

@@ -8,25 +8,13 @@ use Illuminate\Contracts\Validation\Rule;
 class Timezone implements Rule
 {
     /**
-     * @var TimezoneRepository
-     */
-    private $timezoneRepository;
-
-    /**
-     * Timezone constructor.
-     * @param TimezoneRepository $timezoneRepository
-     */
-    public function __construct(TimezoneRepository $timezoneRepository)
-    {
-        $this->timezoneRepository = $timezoneRepository;
-    }
-
-    /**
      * @return array|mixed
      */
     private function getTimezones()
     {
-        return $this->timezoneRepository->all();
+        $timezoneRepository = new TimezoneRepository();
+
+        return $timezoneRepository->all();
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Api\PhoneBook\Resources;
 
 use App\Http\Resource\PaginatedJsonResource;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 
 class PhoneBookResource extends PaginatedJsonResource
 {
@@ -15,13 +15,13 @@ class PhoneBookResource extends PaginatedJsonResource
     {
         return [
             'id' => (int)$this->id,
-            'firstname' => (string)$this->firstname,
-            'lastname' => (string)$this->lastname,
+            'firstname' => (string)$this->first_name,
+            'lastname' => (string)$this->last_name,
             'countryCode' => (string)$this->country_code,
             'timezone' => (string)$this->timezone,
             'phoneNumber' => (string)$this->phone_number,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'createdAt' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
+            'updatedAt' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s')
         ];
     }
 }

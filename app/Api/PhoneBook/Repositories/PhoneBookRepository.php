@@ -5,6 +5,7 @@ namespace App\Api\PhoneBook\Repositories;
 use App\Api\PhoneBook\Models\PhoneBook;
 use App\Exceptions\NotFoundException;
 use App\Http\Request\Pagination\PaginationOptions;
+use Illuminate\Support\Arr;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -23,7 +24,7 @@ class PhoneBookRepository
     {
         $phoneBook = $this->model::where('id', $id)->first();
 
-        if(!$phoneBook){
+        if (!$phoneBook) {
             throw new NotFoundException();
         }
 
@@ -39,7 +40,7 @@ class PhoneBookRepository
     {
         $phoneBook = $this->model::where('id', $id)->first();
 
-        if(!$phoneBook){
+        if (!$phoneBook) {
             throw new NotFoundException();
         }
 
@@ -56,5 +57,33 @@ class PhoneBookRepository
             ->allowedSorts('last_name', 'first_name', 'id', 'created_at', 'country_code', 'timezone')
             ->allowedFilters([AllowedFilter::scope('name')])
             ->paginate($options->getPerPage());
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function create($data)
+    {
+        return $this->model::create($data);
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return mixed
+     * @throws NotFoundException
+     */
+    public function update($id, $data)
+    {
+        $phoneBook = $this->model::where('id', $id)->first();
+
+        if (!$phoneBook) {
+            throw new NotFoundException();
+        }
+
+        $phoneBook->update($data);
+
+        return $phoneBook;
     }
 }

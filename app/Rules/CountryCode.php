@@ -8,25 +8,13 @@ use Illuminate\Contracts\Validation\Rule;
 class CountryCode implements Rule
 {
     /**
-     * @var CountryCodeRepository
-     */
-    private $countryCodeRepository;
-
-    /**
-     * CountryCode constructor.
-     * @param CountryCodeRepository $countryCodeRepository
-     */
-    public function __construct(CountryCodeRepository $countryCodeRepository)
-    {
-        $this->countryCodeRepository = $countryCodeRepository;
-    }
-
-    /**
      * @return array|mixed
      */
     private function getCountryCodes()
     {
-        return $this->countryCodeRepository->all();
+        $countryCodeRepository = new CountryCodeRepository();
+
+        return $countryCodeRepository->all();
     }
 
     /**

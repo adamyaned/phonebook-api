@@ -3,11 +3,13 @@
 namespace App\Api\PhoneBook\Controllers;
 
 use App\Api\PhoneBook\Repositories\PhoneBookRepository;
+use App\Api\PhoneBook\Requests\PostPhoneBookRequest;
+use App\Api\PhoneBook\Requests\UpdatePhoneBookRequest;
 use App\Api\PhoneBook\Resources\PhoneBookResource;
 use App\Http\Controllers\Controller;
 use App\Http\Request\Pagination\PaginationOptions;
-use App\Http\Response\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PhoneBookController extends Controller
 {
@@ -46,21 +48,42 @@ class PhoneBookController extends Controller
     {
         $result = $this->phoneBookRepository->get($id);
 
-        return response()->json($result);
+        return response()->json(new PhoneBookResource($result));
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     */
     public function delete(int $id)
     {
         $this->phoneBookRepository->delete($id);
+
+        return response()->json(['status' => 'success']);
     }
 
-    public function update()
+    /**
+     * @param $id
+     * @param UpdatePhoneBookRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\NotFoundException
+     */
+    public function update($id, UpdatePhoneBookRequest $request)
     {
+        $result = $this->phoneBookRepository->update($id, snakeCase($request->validated()));
 
+        return response()->json(new PhoneBookResource($result));
     }
 
-    public function create()
+    /**
+     * @param PostPhoneBookRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(PostPhoneBookRequest $request)
     {
+        $result = $this->phoneBookRepository->create(snakeCase($request->validated()));
 
+        return response()->json(new PhoneBookResource($result), Response::HTTP_CREATED);
     }
 }
