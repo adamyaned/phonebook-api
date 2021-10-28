@@ -41,6 +41,11 @@ class AuthRepository
         ]);
     }
 
+    /**
+     * @param $data
+     * @return array
+     * @throws ValidationException
+     */
     public function login($data)
     {
         $user = $this->userRepository->getByEmail($data['email']);

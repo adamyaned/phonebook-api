@@ -2,14 +2,15 @@
 
 namespace App\Support\Validation\CoutryCode\Repositories;
 
-use Illuminate\Http\Client\RequestException;
+use App\Exceptions\ApiException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class CountryCodeRepository
 {
     /**
-     * @return array|mixed
+     * @return mixed
+     * @throws ApiException
      */
     public function all()
     {
@@ -21,8 +22,8 @@ class CountryCodeRepository
                     return array_keys($result);
                 }
             });
-        }catch (RequestException $exception){
-            logError($exception);
+        }catch (\Exception $exception){
+            throw new ApiException();
         }
     }
 }
