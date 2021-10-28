@@ -17,16 +17,23 @@ use App\Api\Auth\Controllers\AuthController;
 */
 
 Route::prefix('auth')->group(function (){
+    Route::middleware('auth:sanctum')->group(function() {
+        Route::get('me', AuthController::class . '@getAuthUser');
+        Route::delete('logout', AuthController::class . '@logout');
+    });
+
     Route::post('login', AuthController::class . '@login');
     Route::post('register', AuthController::class . '@register');
-    Route::get('me', AuthController::class . '@getAuthUser');
-    Route::post('logout', AuthController::class . '@logout');
 });
 
-Route::prefix('phonebooks')->group(function (){
-    Route::get('', PhoneBookController::class . '@all');
-    Route::post('', PhoneBookController::class . '@create');
-    Route::get('{id}', PhoneBookController::class . '@get');
-    Route::put('{id}', PhoneBookController::class . '@update');
-    Route::delete('{id}', PhoneBookController::class . '@delete');
+Route::middleware('auth:sanctum')->group(function() {
+
+    Route::prefix('phonebooks')->group(function () {
+        Route::get('', PhoneBookController::class . '@all');
+        Route::post('', PhoneBookController::class . '@create');
+        Route::get('{id}', PhoneBookController::class . '@get');
+        Route::put('{id}', PhoneBookController::class . '@update');
+        Route::delete('{id}', PhoneBookController::class . '@delete');
+    });
+
 });

@@ -13,6 +13,35 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "edgar.adamyan.2019@gmail.com",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Edgar Adamyan",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123456",
+									"description": "required",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "{{base_url}}/auth/register",
 							"host": [
@@ -28,9 +57,39 @@
 				},
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  JSON.parse(responseBody);\r",
+									"console.log(jsonData);\r",
+									"postman.setEnvironmentVariable('access_token', jsonData?.token);\r",
+									"\r",
+									"tests['Status code 200'] = responseCode.code === 200;"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "edgar.adamyan.2019@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
 							"host": [
@@ -47,7 +106,17 @@
 				{
 					"name": "Logout",
 					"request": {
-						"method": "POST",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
 						"header": [],
 						"url": {
 							"raw": "{{base_url}}/auth/logout",
@@ -65,8 +134,24 @@
 				{
 					"name": "Me",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/auth/me",
 							"host": [
@@ -88,23 +173,16 @@
 				{
 					"name": "Get phone book",
 					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/phonebooks",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"phonebooks"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get phone books",
-					"request": {
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -121,10 +199,108 @@
 					"response": []
 				},
 				{
+					"name": "Get phone books",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/phonebooks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"phonebooks"
+							],
+							"query": [
+								{
+									"key": "filter[name]",
+									"value": "Hilda",
+									"description": "Filter by lastname or firstname",
+									"disabled": true
+								},
+								{
+									"key": "sort",
+									"value": "id",
+									"description": "Supported sort params: first_name, last_name, id, created_at, country_code, timezone",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "2",
+									"description": "optional",
+									"disabled": true
+								},
+								{
+									"key": "perPage",
+									"value": "10",
+									"description": "optional",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Update phone book",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Edgar",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "lastName",
+									"value": "Adamyan",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "timezone",
+									"value": "America/Monterrey",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "countryCode",
+									"value": "AM",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "phoneNumber",
+									"value": "+374 95 53 03 97",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
 						"url": {
 							"raw": "{{base_url}}/phonebooks/1",
 							"host": [
@@ -141,8 +317,53 @@
 				{
 					"name": "Add phone book",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Edgar",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Adamyan",
+									"description": "optional",
+									"type": "text"
+								},
+								{
+									"key": "timezone",
+									"value": "America/Monterrey",
+									"description": "optional",
+									"type": "text"
+								},
+								{
+									"key": "countryCode",
+									"value": "AM",
+									"description": "optional",
+									"type": "text"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "+374 95 53 03 97",
+									"description": "required",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
 							"raw": "{{base_url}}/phonebooks",
 							"host": [
@@ -150,6 +371,34 @@
 							],
 							"path": [
 								"phonebooks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete phone book",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/phonedbooks/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"phonedbooks",
+								"1"
 							]
 						}
 					},
